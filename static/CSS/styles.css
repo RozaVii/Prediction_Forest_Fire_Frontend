@@ -1,4 +1,4 @@
-ody {
+body {
     font-family: Arial, sans-serif;
     margin: 0;
     display: flex;
@@ -35,6 +35,7 @@ header nav a {
 .container {
     display: flex;
     flex: 1;
+    overflow: hidden;
 }
 
 aside {
@@ -45,7 +46,7 @@ aside {
     border-right: 1px solid #ddd;
     padding: 10px;
     box-sizing: border-box;
-    height: calc(100vh - 52px); /* Subtract the height of the header */
+    height: calc(96vh - 52px); /* Subtract the height of the header */
 }
 
 aside ul {
@@ -64,7 +65,11 @@ aside ul li a{
 }
 
 aside .settings {
-    margin-top: auto;
+    margin-top: auto; /* Pushes .settings to the bottom */
+}
+
+aside .settings hr {
+    color: #f0f0f0;
 }
 
 main {
