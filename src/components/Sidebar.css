@@ -1,13 +1,25 @@
 .sidebar {
+  display: flex;
+  flex: 0.25;
+  overflow: hidden;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
   width: 200px;
-  background-color: #f8f8f8;
-  border-right: 1px solid #ddd;
-  padding: 20px;
+  background-color: #333;
+  color: white;
+  border-right: 3px solid #ddd;
+  padding: 15px;
+  box-sizing: border-box;
+  height: calc(96vh - 52px);
 }
 
 .sidebar nav ul {
   list-style-type: none;
   padding: 0;
+  flex-grow: 1;
 }
 
 .sidebar nav ul li {
@@ -16,12 +28,16 @@
 
 .sidebar nav ul li a {
   text-decoration: none;
-  color: #333;
+  color: white;
 }
 
 .sidebar nav ul li a.active-link {
   font-weight: bold;
-  color: #007bff;
+  color: #333;
+}
+
+.sidebar div.settings {
+  margin-top: auto;
 }
 
 .sidebar h3 {
