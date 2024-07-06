@@ -1,0 +1,71 @@
+/* src/components/CreateFHClass.css */
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.info-content {
+  display: flex;
+  flex: 1;
+}
+
+.create-fhc-container {
+  padding: 20px;
+  flex: 1;
+}
+
+.create-fhc-title {
+  text-align: center; /* Центрируем заголовок */
+  margin-bottom: 20px;
+}
+
+.create-fhc-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+select,
+button,
+input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.fhc-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ddd; /* Рамка вокруг таблицы */
+}
+
+.fhc-table th,
+.fhc-table td {
+  border-bottom: 1px solid #ddd; /* Линии разделяющие строки */
+  padding: 10px;
+  text-align: left;
+}
+
+.fhc-table th {
+  border-bottom: 2px solid #ddd; /* Немного толще граница для заголовков */
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
