@@ -7,6 +7,9 @@ export const useAxios = (baseURL) => {
 
     const isTokenValid = () => {
         const accessToken = localStorage.getItem("accessToken")
+        if (!accessToken) {
+            return false
+        }
         const decode = jwtDecode(accessToken)
         const tokenDate = new Date(decode.exp * 1000);
         const currentDate = new Date()

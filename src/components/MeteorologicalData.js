@@ -1,9 +1,10 @@
 // src/components/MeteorologicalData.js
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import './MeteorologicalData.css';
+import {useAxios} from "./AxiosComponent";
 
 const MeteorologicalData = () => {
   const [selectedData, setSelectedData] = useState('');
@@ -15,6 +16,18 @@ const MeteorologicalData = () => {
     },
     // Добавить другие данные по мере необходимости
   ]);
+  const axios = useAxios('http://localhost:8080');
+
+  useEffect(() => {
+    if (!axios) return;
+
+    axios.get('/api/v1/weather-data')
+        .then((response) => {
+          setMeteoData(response.data)
+          })
+        .catch((err) => {console.log(err)})
+  }, [axios]);
+
   const navigate = useNavigate();
 
   const handleSelectChange = (e) => {

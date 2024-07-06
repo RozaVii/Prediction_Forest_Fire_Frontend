@@ -1,9 +1,10 @@
 // src/components/FireHazardClass.js
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import './FireHazardClass.css';
+import {useAxios} from "./AxiosComponent";
 
 const FireHazardClass = () => {
   const [selectedClass, setSelectedClass] = useState('');
@@ -17,9 +18,36 @@ const FireHazardClass = () => {
     },
     // Добавить другие классы
   ]);
+  const axios = useAxios('http://localhost:8080');
+
+  const convertDto = (dto) => {
+    const result = {
+      id: dto['id'],
+      name: dto['name'],
+      lowerBound: dto['minValue'],
+      upperBound: dto['maxValue'],
+      threatLevel: dto['fireDangerName'],
+    }
+
+    console.log(result)
+
+    return result
+  }
+
+  useEffect(() => {
+    if (!axios) return;
+
+    axios.get('/api/v1/fire-weather-indexes')
+        .then((response) => {
+          const convertResult = response.data.map(dto => convertDto(dto))
+          setClasses(convertResult)
+        })
+        .catch((err) => {console.log(err)})
+  }, [axios])
   const navigate = useNavigate();
 
   const handleSelectChange = (e) => {
+    console.log(e.target)
     setSelectedClass(e.target.value);
   };
 
