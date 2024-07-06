@@ -1,24 +1,73 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Login.css';
 import logo from '../images/logo-2.png';
-import axios from 'axios'
-
 
 const Login = (props) => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
- const handleSubmit = (e) => {
-      e.preventDefault();
-        axios.get('http://45.12.236.235:20010/api/v1/weather-data', {
-          headers: {
-            "Authorizaton": "Basic dGN2ZXRrb3Yuc286MTIzMzIx"
-          }
-        }).then((resp) => console.log(resp))
-          .catch((err) => console.log(err))
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!email || !password) {    ///maybe the problem is in the "email" and to used "username'
+      setError('Введите логин и пароль');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://45.12.236.235:20010/login', {
+        email,
+        password
+      });
+
+      if (response.data.success) {
+        props.onLogin({ email, password });
+        navigate('/info'); // Перенаправление на страницу Info после успешного входа
+        console.log('Успешно зашли');
+      } else {
+        setError('Неверный логин или пароль');
+      }
+    } catch (error) {
+      console.error('Ошибка при отправке запроса:', error);
+      setError('Произошла ошибка. Пожалуйста, попробуйте снова.');
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <div className="login-header">
+        <img src={logo} alt="Logo" className="login-logo" />
+        <h1 className="login-title">Prediction Forest Fire</h1>
+      </div>
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h2 className="login-heading">Вход</h2>
+        <button type="button" className="register-link" onClick={() => props.onFormSwitch('register')}>
+          Вы ещё не зарегистрированы?
+        </button>
+        {error && <div className="error-message">{error}</div>}
+        <input
+          type="text"
+          placeholder="email@domain.com / login"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit">Вход</button>
+        <div className="terms">
+          Нажав вход, вы соглашаетесь с нашими <a href="#">Условиями <br /> предоставления услуг</a> и <a href="#">Политикой конфиденциальности</a>
+        </div>
+      </form>
+    </div>
+  );
+};
 
 
 
@@ -38,8 +87,6 @@ const Login = (props) => {
 //         .catch((err) => {
 //            console.log(err.message);
 //         });
-   };
-
 
 
 
@@ -52,38 +99,4 @@ const Login = (props) => {
 //      navigate('/info'); // Перенаправление на страницу Info после успешного входа
 //    }
 //  };
-
-  return (
-    <div className="login-container">
-      <div className="login-header">
-        <img src={logo} alt="Logo" className="login-logo" />
-        <h1 className="login-title">Prediction Forest Fire</h1>
-      </div>
-      <form className="login-form" onSubmit={handleSubmit}>
-        <h2 className="login-heading">Вход</h2>
-        <button type="button" className="register-link" onClick={() => props.onFormSwitch('register')}>
-          Вы ещё не зарегистрированы?
-        </button>
-        {error && <div className="error-message">{error}</div>}
-        <input
-          type="text"
-          placeholder="email@domain.com / login"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Вход</button>
-        <div className="terms">
-          Нажав вход, вы соглашаетесь с нашими <a href="#">Условиями <br /> предоставления услуг</a> и <a href="#">Политикой конфиденциальности</a>
-        </div>
-      </form>
-    </div>
-  );
-};
-
 export default Login;
