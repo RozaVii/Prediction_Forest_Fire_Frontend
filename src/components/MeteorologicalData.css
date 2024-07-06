@@ -1,0 +1,63 @@
+/* src/components/MeteorologicalData.css */
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.info-content {
+  display: flex;
+  flex: 1;
+}
+
+.meteo-container {
+  padding: 20px;
+  flex: 1;
+}
+
+.meteo-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.meteo-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.meteo-info {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+.meteo-info h2 {
+  margin-top: 0;
+}
+
+.meteo-info p {
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+
+button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+select {
+  padding: 5px;
+  font-size: 1rem;
+}
