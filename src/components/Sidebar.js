@@ -21,18 +21,20 @@ const Sidebar = () => {
             <NavLink to="/precipitation-indexes" activeClassName="active-link">Осадки с индексами</NavLink>
           </li>
         </ul>
-        <h3>Настройки</h3>
-        <ul>
-          <li>
-            <NavLink to="/database-cleanup" activeClassName="active-link">Очистить базу</NavLink>
-          </li>
-          <li>
-            <NavLink to="/task-solver" activeClassName="active-link">Решатель задач</NavLink>
-          </li>
-          <li>
-            <NavLink to="/database-check" activeClassName="active-link">Проверить на полноту</NavLink>
-          </li>
-        </ul>
+        <div class="settings">
+            <h3>Настройки</h3>
+                <ul>
+                  <li>
+                    <NavLink to="/database-cleanup" activeClassName="active-link">Очистить базу</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/task-solver" activeClassName="active-link">Решатель задач</NavLink>
+                  </li>
+                  <li>
+                    <NavLink to="/database-check" activeClassName="active-link">Проверить на полноту</NavLink>
+                  </li>
+                </ul>
+        </div>
       </nav>
     </div>
   );
