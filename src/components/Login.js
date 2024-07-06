@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
 import logo from '../images/logo-2.png';
+import {useAxios} from "./AxiosComponent";
 
 const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const axios = useAxios("http://localhost:8080")
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,18 +20,19 @@ const Login = (props) => {
     }
 
     try {
-      const response = await axios.post('http://45.12.236.235:20010/login', {
-        email,
-        password
-      });
+      axios.post('/api/v1/login', new URLSearchParams({
+        'username' : email,
+        'password' : password
+      }), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).then(res => {
+        const accessToken = res.data['accessToken']
+        localStorage.setItem('accessToken', accessToken);
+        navigate('/info');
+      }).catch(err => setError('Неверный логин или пароль'));
 
-      if (response.data.success) {
-        props.onLogin({ email, password });
-        navigate('/info'); // Перенаправление на страницу Info после успешного входа
-        console.log('Успешно зашли');
-      } else {
-        setError('Неверный логин или пароль');
-      }
     } catch (error) {
       console.error('Ошибка при отправке запроса:', error);
       setError('Произошла ошибка. Пожалуйста, попробуйте снова.');
