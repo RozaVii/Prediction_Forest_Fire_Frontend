@@ -5,7 +5,7 @@
   margin-top: 20px;
   margin-bottom: auto;
   padding: 40px;
-  background-color: #f9f9f9;
+  background-color: #f4f4f4;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -67,16 +67,15 @@
 }
 
 .task-solver-buttons button:first-child {
-  background-color: #28a745;
-  color: white;
+  background-color: #ff8c00;
+  color: #333;
 }
 
 .task-solver-buttons button:last-child {
-  background-color: #28a745;
-  color: white;
+  background-color: #ff8c00;
+  color: #333;
 }
 
 .task-solver-buttons button:hover {
   opacity: 0.9;
 }
-
