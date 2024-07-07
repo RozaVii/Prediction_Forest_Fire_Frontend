@@ -6,7 +6,6 @@ import MeteorologicalData from './components/MeteorologicalData';
 import ComplexIndex from './components/ComplexIndex';
 import FireHazardClass from './components/FireHazardClass';
 import PrecipitationIndexes from './components/PrecipitationIndexes';
-import DatabaseCheck from './components/DatabaseCheck';
 import DatabaseCleanup from './components/DatabaseCleanup';
 import Registration from './components/Registration';
 import Info from './components/Info';
@@ -60,7 +59,6 @@ function App() {
           <Route path="/fire-hazard-class" element={<FireHazardClass />} />
           <Route path="/complex-index" element={<ComplexIndex />} />
           <Route path="/precipitation-indexes" element={<PrecipitationIndexes />} />
-          <Route path="/database-check" element={<DatabaseCheck />} />
           <Route path="/database-cleanup" element={<DatabaseCleanup />} />
           <Route path="/task-solver" element={<TaskSolver />} />
           <Route path="/create-meteo-data" element={<CreateMeteoData />} />
