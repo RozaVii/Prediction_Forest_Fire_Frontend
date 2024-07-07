@@ -37,7 +37,7 @@
 }
 
 .cleanup-box button {
-  background-color: #ff4c4c;
+  background-color: #ff8c00;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -46,7 +46,8 @@
 }
 
 .cleanup-box button:disabled {
-  background-color: #ddd;
+  background-color: #ff8c00;
+  color: white;
   cursor: not-allowed;
 }
 
