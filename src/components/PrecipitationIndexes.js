@@ -7,7 +7,7 @@ import './PrecipitationIndexes.css';
 const PrecipitationIndexes = () => {
   const [data, setData] = useState([
     { min: '0.0', max: '1.0E7', reset: '3', index: 'КППО Нестерова' },
-    // Добавьте дополнительные данные, если необходимо
+    // Добавьть дополнительные данные, если необходимо
   ]);
 
   const [newRow, setNewRow] = useState({ min: '', max: '', reset: '', index: '' });
