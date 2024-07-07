@@ -1,0 +1,57 @@
+/* src/components/DatabaseCleanup.css */
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.info-content {
+  display: flex;
+  flex: 1;
+}
+
+.cleanup-container {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cleanup-box {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 5px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.cleanup-box h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.cleanup-box p {
+  margin-bottom: 20px;
+}
+
+.cleanup-box button {
+  background-color: #ff4c4c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.cleanup-box button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.message {
+  margin-top: 20px;
+  color: red;
+  font-size: 16px;
+}
