@@ -1,5 +1,5 @@
 // src/components/AddKPPO_2.js
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
@@ -12,9 +12,15 @@ const AddKPPO_2 = () => {
   const { state } = location;
   const [formula, setFormula] = useState('');
   const [error, setError] = useState('');
+  const [variables, setVariables] = useState([]);
+  const [isFinished, setIsFinished] = useState(false);
   const axios = useAxios('http://localhost:8080');
 
-  console.log(state)
+  useEffect(() => {
+    if (state && state.formula) {
+      setFormula(state.formula)
+    }
+  }, []);
 
   const handleNext = () => {
     if (formula.trim() === '') {
@@ -27,11 +33,17 @@ const AddKPPO_2 = () => {
       headers: {
         contentType: 'application/json',
       }
-    }).then(_ => {
-      navigate('/add-kppo-3', {state: {...state, formula}})
+    }).then((resp) => {
+      setVariables(variables => [...variables, ...resp.data]);
+      setIsFinished(true)
     })
       .catch((err) => console.log(err))
+
   };
+
+  if (isFinished) {
+    navigate('/add-kppo-3', {state: {...state, formula, variables}})
+  }
 
   const handleBack = () => {
     navigate('/add-kppo-1', { state });

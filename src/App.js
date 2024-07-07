@@ -16,6 +16,7 @@ import AddKPPO_2 from './components/AddKPPO_2';
 import AddKPPO_3 from './components/AddKPPO_3';
 import Forecast from './components/Forecast';
 import './styles.css';
+import {FFWIProvider} from "./components/FFWIProvider";
 
 function App() {
   const [currentForm, setCurrentForm] = useState('login');
