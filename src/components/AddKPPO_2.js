@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import './AddKPPO_2.css';
+import {useAxios} from "./AxiosComponent";
 
 const AddKPPO_2 = () => {
   const navigate = useNavigate();
@@ -10,13 +12,25 @@ const AddKPPO_2 = () => {
   const { state } = location;
   const [formula, setFormula] = useState('');
   const [error, setError] = useState('');
+  const axios = useAxios('http://localhost:8080');
+
+  console.log(state)
 
   const handleNext = () => {
     if (formula.trim() === '') {
       setError('Поле обязательно к заполнению');
       return;
     }
-    navigate('/add-kppo-3', { state: { ...state, formula } });
+    axios.post('/api/v1/app-endpoint/check-formula', {
+      formula: formula
+    }, {
+      headers: {
+        contentType: 'application/json',
+      }
+    }).then(_ => {
+      navigate('/add-kppo-3', {state: {...state, formula}})
+    })
+      .catch((err) => console.log(err))
   };
 
   const handleBack = () => {

@@ -1,32 +1,63 @@
 // src/components/AddKPPO_1.js
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
+import {FFWIContext} from "./FFWIProvider";
 import './AddKPPO_1.css';
+import {useAxios} from "./AxiosComponent";
 
 const AddKPPO_1 = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
-  const [availableParams, setAvailableParams] = useState([
-    'Температура воздуха', 'Температура точки росы', 'Суточные осадки'
-  ]);
+  const [weatherParams, setWeatherParams] = useState([]);
+  const [availableParams, setAvailableParams] = useState([]);
+  const location = useLocation();
+  const { state } = location;
   const [selectedParams, setSelectedParams] = useState([]);
   const [error, setError] = useState('');
+  const axios = useAxios('http://localhost:8080');
+
+  useEffect(() => {
+    if (!axios) return
+    console.log(state)
+
+    axios.get('/api/v1/weather-data')
+        .then((response) => {
+          var weatherParams = response.data.map(param => {
+            var result = {id: param.id, name: param.name}
+            return result
+          })
+          setWeatherParams(weatherParams)
+          if (state && state.name) {
+            setName(state.name)
+          }
+          if (state && state.selectedParams) {
+            setSelectedParams(state.selectedParams)
+            const paramIds = state.selectedParams.map(param => param.id)
+            weatherParams = weatherParams.filter(param => !paramIds.includes(param.id))
+          }
+          console.log(weatherParams)
+          setAvailableParams(weatherParams)
+
+        })
+  }, [axios])
 
   const handleAddParam = () => {
     const selectedOption = document.querySelector('#availableParams option:checked');
     if (selectedOption) {
-      setSelectedParams([...selectedParams, selectedOption.value]);
-      setAvailableParams(availableParams.filter(param => param !== selectedOption.value));
+      const weatherParam = weatherParams.find(param => param.id === selectedOption.value)
+      setSelectedParams([...selectedParams, weatherParam]);
+      setAvailableParams(availableParams.filter(param => param.id !== weatherParam.id));
     }
   };
 
   const handleRemoveParam = () => {
     const selectedOption = document.querySelector('#selectedParams option:checked');
     if (selectedOption) {
-      setAvailableParams([...availableParams, selectedOption.value]);
-      setSelectedParams(selectedParams.filter(param => param !== selectedOption.value));
+      const weatherParam = weatherParams.find(param => param.id === selectedOption.value)
+      setAvailableParams([...availableParams, weatherParam]);
+      setSelectedParams(selectedParams.filter(param => param.id !== weatherParam.id));
     }
   };
 
@@ -57,7 +88,7 @@ const AddKPPO_1 = () => {
             <div className="table">
               <select id="availableParams" multiple size="5">
                 {availableParams.map(param => (
-                  <option key={param} value={param}>{param}</option>
+                  <option key={param.id} value={param.id}>{param.name}</option>
                 ))}
               </select>
             </div>
@@ -68,7 +99,7 @@ const AddKPPO_1 = () => {
             <div className="table">
               <select id="selectedParams" multiple size="5">
                 {selectedParams.map(param => (
-                  <option key={param} value={param}>{param}</option>
+                  <option key={param.id} value={param.id}>{param.name}</option>
                 ))}
               </select>
             </div>
