@@ -1,0 +1,72 @@
+/* src/components/AddKPPO_1.css */
+.info-container {
+  display: flex;
+  height: 100vh;
+}
+
+.info-content {
+  display: flex;
+  flex: 1;
+}
+
+.add-kppo-container {
+  padding: 20px;
+  flex: 1;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.name-input {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.tables-container {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.table select {
+  width: 400px;
+  height: 300px;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.footer-buttons button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  margin-top: 0px;
+}
