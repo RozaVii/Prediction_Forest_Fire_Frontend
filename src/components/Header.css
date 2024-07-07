@@ -3,8 +3,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #46974c;
-  color: white;
+  background-color: #333;
+  color: #ff8c00; 
   border-bottom: 1px solid #ddd;
 }
 
@@ -22,3 +22,4 @@
 .header-right {
   font-size: 1.2em;
 }
+
