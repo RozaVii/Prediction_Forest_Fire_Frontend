@@ -1,4 +1,3 @@
-// src/components/Sidebar.js
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Sidebar.css';
@@ -9,31 +8,28 @@ const Sidebar = () => {
       <nav>
         <ul>
           <li>
-            <NavLink to="/meteorological-data" activeClassName="active-link">Метеоданные</NavLink>
+            <NavLink to="/meteorological-data" className={({ isActive }) => isActive ? "active-link" : ""}>Метеоданные</NavLink>
           </li>
           <li>
-            <NavLink to="/fire-hazard-class" activeClassName="active-link">Класс пожарной опасности</NavLink>
+            <NavLink to="/fire-hazard-class" className={({ isActive }) => isActive ? "active-link" : ""}>Класс пожарной опасности</NavLink>
           </li>
           <li>
-            <NavLink to="/complex-index" activeClassName="active-link">Комплексные показатели</NavLink>
+            <NavLink to="/complex-index" className={({ isActive }) => isActive ? "active-link" : ""}>Комплексные показатели</NavLink>
           </li>
           <li>
-            <NavLink to="/precipitation-indexes" activeClassName="active-link">Осадки с индексами</NavLink>
+            <NavLink to="/precipitation-indexes" className={({ isActive }) => isActive ? "active-link" : ""}>Осадки с индексами</NavLink>
           </li>
         </ul>
-        <div class="settings">
-            <h3>Настройки</h3>
-                <ul>
-                  <li>
-                    <NavLink to="/database-cleanup" activeClassName="active-link">Очистить базу</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/task-solver" activeClassName="active-link">Решатель задач</NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/database-check" activeClassName="active-link">Проверить на полноту</NavLink>
-                  </li>
-                </ul>
+        <div className="settings">
+          <h3>Настройки</h3>
+          <ul>
+            <li>
+              <NavLink to="/database-cleanup" className={({ isActive }) => isActive ? "active-link" : ""}>Очистить базу</NavLink>
+            </li>
+            <li>
+              <NavLink to="/task-solver" className={({ isActive }) => isActive ? "active-link" : ""}>Решатель задач</NavLink>
+            </li>
+          </ul>
         </div>
       </nav>
     </div>
@@ -41,4 +37,5 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
 
