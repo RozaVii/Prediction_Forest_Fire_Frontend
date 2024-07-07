@@ -4,6 +4,9 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import './TaskSolver.css';
 
+import {useAxios} from "./AxiosComponent";
+import login from "./Login";
+
 const TaskSolver = () => {
   const [complexIndex, setComplexIndex] = useState('');
   const [previousIndex, setPreviousIndex] = useState('');
@@ -12,17 +15,38 @@ const TaskSolver = () => {
   const [parameters, setParameters] = useState({});
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [complexIndexes, setComplexIndexes] = useState([]);
+  const [isFinished, setIsFinished] = useState(false);
+  const [messages, setMessages] = useState([]);
+
+  const axios = useAxios('http://localhost:8080');
 
   useEffect(() => {
-    if (complexIndex) {
-    setMeteoData(["Температура", "Влажность"]);
-    }
-  }, [complexIndex]);
+      if (!axios) return;
+
+      axios.get('/api/v1/app-endpoints/forecast')
+          .then((resp) => {
+            setComplexIndexes([...resp.data])
+            const test = resp.data.find(index => index.ffwiName === 'По всем параметрам')
+            console.log(resp.data)
+            setComplexIndex({...test})
+            setPreviousIndex(test.previousComplexIndicator)
+            setDate(test.previousComplexDate)
+            setMeteoData(test.weatherDataParams.map(param => {
+              const test = {...param, data: ''}
+
+              console.log(test)
+              return test
+            }))
+          })
+          .catch((err) => console.log(err));
+  }, [axios]);
 
   const handleInputChange = (event, field) => {
+    console.log(parameters)
     setParameters({
       ...parameters,
-      [field]: event.target.value
+      [field.weatherDataId]: event.target.value
     });
   };
 
@@ -32,21 +56,48 @@ const TaskSolver = () => {
   };
 
   const handleForecast = () => {
-    if (!complexIndex || !previousIndex || !date || meteoData.length === 0) {
-      setError('Необходимо заполнить все поля для построения прогноза');
-      return;
-    }
+    console.log(complexIndex)
+    console.log(previousIndex)
+    console.log(date)
+    console.log(meteoData.length === 0)
+    // if (!complexIndex || !previousIndex || !date || meteoData.length === 0) {
+    //   setError('Необходимо заполнить все поля для построения прогноза');
+    //   return;
+    // }
 
-    const allFieldsFilled = meteoData.every(data => parameters[data]);
+    // console.log(parameters['01b4a98b-255f-4777-b765-a7d093a1b1d5'])
 
-    if (!allFieldsFilled) {
-      setError('Необходимо заполнить все поля для построения прогноза');
-      return;
-    }
+    axios.post('api/v1/app-endpoints/forecast', {
+      ffwiId: complexIndex.ffwiId,
+      previousComplexIndicator: previousIndex,
+      weatherDataParams: meteoData.map(data => {
+        const value = parameters[data.weatherDataId]
+
+        return {weatherDataId: data.weatherDataId, value: value}
+      })
+    }).then((resp) => {
+      console.log(resp)
+      setMessages(resp.data)
+      setIsFinished(true)
+    })
+        .catch((error) => console.log(error))
 
     // Логика определения уровня угрозы и перехода на Forecast.js
-    navigate('/forecast', { state: { complexIndex, previousIndex, date, parameters } });
+    // ;
   };
+
+  if (isFinished) {
+    navigate('/forecast', { state: { messages } })
+  }
+
+  const onTableChange = (e) => {
+    const newComplexIndex = complexIndexes.find(index => index.ffwiId === e.target.value)
+    setComplexIndex({...newComplexIndex});
+    setPreviousIndex(newComplexIndex.previousComplexIndicator)
+    setDate(newComplexIndex.previousComplexDate)
+    console.log(newComplexIndex.previousComplexDate)
+    setMeteoData(newComplexIndex.weatherDataParams)
+  }
 
   return (
     <div className="info-container">
@@ -56,10 +107,15 @@ const TaskSolver = () => {
         <div className="task-solver-container">
           <div className="task-solver-header">
             <label>КППО</label>
-            <select value={complexIndex} onChange={(e) => setComplexIndex(e.target.value)}>
-              <option value="">Выберите КППО</option>
-              <option value="КППО Нестерова">КППО Нестерова</option>
-              {/* Другие опции */}
+            <select value={complexIndex} onChange={onTableChange}>
+              <option value={complexIndex.ffwiId}>{complexIndex.ffwiName}</option>
+              {
+                complexIndexes
+                    .filter((index) => index.ffwiId !== complexIndex.ffwiId)
+                    .map((complexIndex) => (
+                    <option key={complexIndex.ffwiId} value={complexIndex.ffwiId}>{complexIndex.ffwiName}</option>
+                ))
+              }
             </select>
           </div>
           <div className="task-solver-subheader">
@@ -88,11 +144,12 @@ const TaskSolver = () => {
             <tbody>
               {meteoData.map((data, index) => (
                 <tr key={index}>
-                  <td>{data}</td>
+                  <td>{data.weatherName}</td>
                   <td>
                     <input
                       type="text"
-                      value={parameters[data] || ''}
+                      key={data.weatherDataId}
+                      value={parameters[data.weatherDataId] || ''}
                       onChange={(e) => handleInputChange(e, data)}
                       placeholder={`Введите значение`}
                     />
