@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import './AddKPPO_2.css';
 
 const AddKPPO_2 = () => {
   const navigate = useNavigate();
