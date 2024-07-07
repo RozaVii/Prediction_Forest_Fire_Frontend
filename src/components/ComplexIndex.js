@@ -4,41 +4,45 @@ import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import './ComplexIndex.css';
+import {ComplexIndexModel} from "../model/ComplexIndexModel";
+import {useAxios} from "./AxiosComponent";
 
 const ComplexIndex = () => {
   const [selectedIndex, setSelectedIndex] = useState('');
+  const [models, setModels] = useState([]);
   const [indexes, setIndexes] = useState([]);
   const [classes, setClasses] = useState([]);
   const [formula, setFormula] = useState('');
   const [meteoData, setMeteoData] = useState([]);
   const [thresholdData, setThresholdData] = useState([]);
   const navigate = useNavigate();
+  const PATH = '/api/v1/fire-forecast-indexes'
+
+  const axios = useAxios('http://localhost:8080');
 
   useEffect(() => {
-    // Тестовые данные
-    setIndexes([
-      { id: 1, name: 'Нестеров' },
-    ]);
-
-    if (selectedIndex === 'Нестеров') {
-      setClasses(['I', 'II', 'III']);
-      setFormula('КППО = (Т/100) * В');
-      setMeteoData([
-        { name: 'Температура', parameter: 'Т' },
-        { name: 'Влажность', parameter: 'В' },
-      ]);
-      setThresholdData([
-        { range: '0-300', precipitation: '3' },
-      ]);
-    } else {
-      setClasses([]);
-      setFormula('');
-      setMeteoData([]);
-      setThresholdData([]);
-    }
-  }, [selectedIndex]);
+    if (!axios) return;
+    axios.get(PATH)
+        .then((resp) => {
+          const complexIndexModels = resp.data.map(value => ComplexIndexModel.fromResponse(value))
+          const indexes = complexIndexModels.map((model) => model.toMainIndex())
+          setIndexes(indexes);
+          setModels(complexIndexModels)
+          console.log(resp.data)
+        })
+        .catch((err) => console.log(err));
+  }, [axios]);
 
   const handleSelectChange = (e) => {
+    const complexId = e.target.value
+    const model = models.find((model) => model.id === complexId)
+    const params = model.getParamsToView()
+    const thresholdData = model.getPrecipitationRecordsToView()
+    const classes = model.fwis.split(',')
+    setFormula(model.formula)
+    setMeteoData(params)
+    setThresholdData(thresholdData)
+    setClasses(classes)
     setSelectedIndex(e.target.value);
   };
 
@@ -64,7 +68,7 @@ const ComplexIndex = () => {
               <select value={selectedIndex} onChange={handleSelectChange}>
                 <option value="">Выберите показатель</option>
                 {indexes.map(index => (
-                  <option key={index.id} value={index.name}>{index.name}</option>
+                  <option key={index.id} value={index.id}>{index.name}</option>
                 ))}
               </select>
             </label>
