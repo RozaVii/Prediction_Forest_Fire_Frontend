@@ -10,10 +10,11 @@ const AddKPPO_2 = () => {
   const location = useLocation();
   const { state } = location;
   const [formula, setFormula] = useState('');
+  const [error, setError] = useState('');
 
   const handleNext = () => {
     if (formula.trim() === '') {
-      alert('Все поля должны быть заполнены');
+      setError('Поле обязательно к заполнению');
       return;
     }
     navigate('/add-kppo-3', { state: { ...state, formula } });
@@ -36,6 +37,7 @@ const AddKPPO_2 = () => {
             onChange={(e) => setFormula(e.target.value)}
             className="formula-input"
           />
+          {error && <p className="error">{error}</p>}
           <div className="formula-rules">
             <h2>Правила объявления формулы:</h2>
             <ul>
