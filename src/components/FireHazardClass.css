@@ -37,12 +37,19 @@ button {
 }
 
 button {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #ff8c00;
+  color: #333;
   cursor: pointer;
 }
 
+button:hover {
+  background-color: #e57300;
+  color: white;
+}
+
 button[disabled] {
+  background-color: #ff8c00;
+  color: #333;
   cursor: not-allowed;
   opacity: 0.6;
 }
@@ -50,18 +57,18 @@ button[disabled] {
 .fhc-table {
   width: 100%;
   padding: 20px;
-  border: 1px solid #ddd; /* Добавляем рамку вокруг таблицы */
+  border: 1px solid #ddd;
   border-radius: 5px;
   margin-top: 20px;
 }
 
 .fhc-table th,
 .fhc-table td {
-  border-bottom: 1px solid #ddd; /* Линии разделяющие строки */
+  border-bottom: 1px solid #ddd; 
   padding: 10px;
   text-align: left;
 }
 
 .fhc-table th {
-  border-bottom: 2px solid #ddd; /* Немного толще граница для заголовков */
+  border-bottom: 2px solid #ddd; 
 }
