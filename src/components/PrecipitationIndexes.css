@@ -17,7 +17,7 @@
 }
 
 .precipitation-title {
-  text-align: center; /* Центрируем заголовок */
+  text-align: center;
   margin-bottom: 20px;
 }
 
@@ -29,23 +29,28 @@
 
 .precipitation-table th,
 .precipitation-table td {
-  border: 1px solid #ddd; /* Линии разделяющие строки */
+  border: 1px solid #ddd;
   padding: 10px;
   text-align: left;
 }
 
 .precipitation-table th {
-  background-color: #f2f2f2; /* Затемнённая строка заголовков */
+  background-color: #f2f2f2;
 }
 
 .precipitation-table td button {
-  background-color: #4CAF50;
+  background-color: #ff8c00;
   color: white;
   border: none;
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 3px;
 }
+
+.precipitation-table td button:hover {
+  background-color: #e57300;
+}
+
 
 .precipitation-table td input {
   width: 100%;
@@ -68,13 +73,15 @@
 .pagination button {
   padding: 10px 15px;
   border: 1px solid #ddd;
-  background-color: #4CAF50;
+  background-color: #ff8c00;
+  color: #333;
   cursor: pointer;
   border-radius: 3px;
 }
 
 .pagination button:hover {
-  background-color: #ddd;
+  background-color: #e57300;
+  color: white;
 }
 
 .pagination span {
