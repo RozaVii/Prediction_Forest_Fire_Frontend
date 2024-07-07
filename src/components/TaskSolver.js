@@ -159,8 +159,7 @@ const TaskSolver = () => {
             </tbody>
           </table>
           <div className="task-solver-buttons">
-            <button onClick={handleAutoFill}>Автоматический сбор метеоданных</button>
-            <button onClick={handleForecast}>Определить уровень угрозы</button>
+            <button onClick={handleForecast} style={{margin: '0 auto'}}>Определить уровень угрозы</button>
           </div>
         </div>
       </div>

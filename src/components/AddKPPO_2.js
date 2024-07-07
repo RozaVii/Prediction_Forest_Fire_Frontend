@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import './AddKPPO_2.css';
+// import './AddKPPO_2.css';
 import {useAxios} from "./AxiosComponent";
 
 const AddKPPO_2 = () => {
