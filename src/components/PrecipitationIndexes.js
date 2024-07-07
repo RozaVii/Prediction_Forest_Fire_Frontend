@@ -1,36 +1,92 @@
 // src/components/PrecipitationIndexes.js
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import './PrecipitationIndexes.css';
+import {useAxios} from "./AxiosComponent";
 
 const PrecipitationIndexes = () => {
-  const [data, setData] = useState([
-    { min: '0.0', max: '1.0E7', reset: '3', index: 'КППО Нестерова' },
-    // Добавьть дополнительные данные, если необходимо
-  ]);
-
-  const [newRow, setNewRow] = useState({ min: '', max: '', reset: '', index: '' });
+  const [data, setData] = useState([]);
+  const [newRow, setNewRow] = useState({ min: '', max: '', reset: '', index: '' , id: ''});
+  const [selectedFFWI, setSelectedFFWI] = useState('');
   const [error, setError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [ffwiIdList, setffwiIdList] = useState([
+    {
+      id: null,
+      name: 'Нет никаких КППО'
+    }
+  ]);
   const rowsPerPage = 10;
+  const axios = useAxios('http://localhost:8080');
+
+  const mapToModel = (dto) => {
+    const result = {
+      id: dto.id,
+      min: dto.minValue,
+      max: dto.maxValue,
+      reset: dto.value,
+      index: dto.ffwiName
+    }
+    return result
+  }
+
+  useEffect(() => {
+      if (!axios) return;
+      axios.get('/api/v1/precipitation-records')
+          .then((response) => {
+            const datas = response.data.map(dto => mapToModel(dto))
+            setData(datas)
+          })
+          .catch((err) => console.log(err))
+      axios.get('/api/v1/fire-forecast-indexes')
+          .then((resp) => {
+            var converted = resp.data.map(value => {
+              var obj = {id: value.id, name: value.name}
+
+              return obj
+            });
+            setffwiIdList(converted)
+          })
+          .catch((err) => console.log(err))
+
+  }, [axios]);
 
   const handleInputChange = (e, key) => {
+    console.log(e.target.value);
     setNewRow({ ...newRow, [key]: e.target.value });
   };
 
   const handleAddRow = () => {
-    if (!newRow.min || !newRow.max || !newRow.reset || !newRow.index) {
+    if (!newRow.min || !newRow.max || !newRow.reset || !selectedFFWI) {
       setError('Все поля должны быть заполнены');
       return;
     }
-
-    setData([...data, newRow]);
-    setNewRow({ min: '', max: '', reset: '', index: '' });
-    setError('');
+    axios.post('/api/v1/precipitation-records', {
+      minValue: newRow.min,
+      maxValue: newRow.max,
+      value: newRow.reset,
+      ffwi_id: selectedFFWI
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((resp) => {
+      const ffwiName = ffwiIdList.find(ffwi => ffwi.id === resp.data.ffwId).name
+      const row = {min: resp.data.minValue, max: resp.data.maxValue, reset: resp.data.value, index: ffwiName};
+      setData([...data, row])
+      setNewRow({ min: '', max: '', reset: '', index: '' });
+      setError('')
+    })
+        .catch((err) => console.log(err))
   };
 
   const handleDeleteRow = (index) => {
+    const removable = data.find((_, i) => i === index)
+    console.log('removable', removable)
+    axios.delete('/api/v1/precipitation-records/' + removable.id)
+        .then((resp) => console.log(resp))
+        .catch((err) => console.log(err))
     const newData = data.filter((_, i) => i !== index);
     setData(newData);
   };
@@ -43,6 +99,11 @@ const PrecipitationIndexes = () => {
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
+
+  const handleSelectChange = (e) => {
+    console.log(e.target.value)
+    setSelectedFFWI(e.target.value)
+  }
 
   return (
     <div className="info-container">
@@ -96,11 +157,16 @@ const PrecipitationIndexes = () => {
                   />
                 </td>
                 <td>
-                  <input
-                    type="text"
-                    value={newRow.index}
-                    onChange={(e) => handleInputChange(e, 'index')}
-                  />
+                  <select value={selectedFFWI} style={{width: '100%'}} onChange={handleSelectChange}>
+                    {ffwiIdList.length === 0 &&
+                        <option key={null} value="">Не было создано ни одного КППО</option>
+                    }
+                    {ffwiIdList.length !== 0 &&
+                      ffwiIdList.map(ffwi => (
+                          <option key={ffwi.id} value={ffwi.id}>{ffwi.name}</option>
+                      ))
+                    }
+                  </select>
                 </td>
                 <td>
                   <button onClick={handleAddRow}>+</button>
