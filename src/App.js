@@ -15,6 +15,7 @@ import CreateFHClass from './components/CreateFHClass';
 import AddKPPO_1 from './components/AddKPPO_1';
 import AddKPPO_2 from './components/AddKPPO_2';
 import AddKPPO_3 from './components/AddKPPO_3';
+import Forecast from './components/Forecast';
 import './styles.css';
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
           <Route path="/add-kppo-1" element={<AddKPPO_1 />} />
           <Route path="/add-kppo-2" element={<AddKPPO_2 />} />
           <Route path="/add-kppo-3" element={<AddKPPO_3 />} />
+          <Route path="/forecast" element={<Forecast />} />
         </Routes>
       </div>
     </Router>
