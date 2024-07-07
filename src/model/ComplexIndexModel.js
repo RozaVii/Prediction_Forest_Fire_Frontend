@@ -44,7 +44,9 @@ export class ComplexIndexModel {
 
     getPrecipitationRecordsToView() {
         const params = this.precipitationRecords.map(param => {
-            const result = {range: `${param.minValue}-${param.maxValue}`, precipitation: param.value}
+            const  leftBorder = Number(param.minValue) >= Number("9999999999.99") ? '∞' : param.minValue;
+            const rightBorder = Number(param.maxValue) >= Number("9999999999.99") ? '∞' : param.maxValue;
+            const result = {range: `${leftBorder}-${rightBorder}`, precipitation: param.value}
             return result
         })
 

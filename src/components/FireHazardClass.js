@@ -24,8 +24,8 @@ const FireHazardClass = () => {
     const result = {
       id: dto['id'],
       name: dto['name'],
-      lowerBound: dto['minValue'],
-      upperBound: dto['maxValue'],
+      lowerBound: Number(dto['minValue']) >= Number("9999999999.99") ? "∞" : dto['minValue'],
+      upperBound: dto['maxValue'] >= Number("9999999999.99") ? "∞" : dto['maxValue'],
       threatLevel: dto['fireDangerName'],
     }
 

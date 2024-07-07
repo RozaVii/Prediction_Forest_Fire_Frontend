@@ -23,8 +23,8 @@ const PrecipitationIndexes = () => {
   const mapToModel = (dto) => {
     const result = {
       id: dto.id,
-      min: dto.minValue,
-      max: dto.maxValue,
+      min: Number(dto.minValue) >= Number("9999999999.99") ? "∞" : dto['minValue'],
+      max: Number(dto.maxValue) >= Number("9999999999.99") ? "∞" : dto['maxValue'],
       reset: dto.value,
       index: dto.ffwiName
     }

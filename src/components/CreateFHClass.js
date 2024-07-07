@@ -1,29 +1,58 @@
 // src/components/CreateFHClass.js
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Sidebar from './Sidebar';
 import './CreateFHClass.css';
+import {useAxios} from "./AxiosComponent";
 
 const CreateFHClass = () => {
   const [name, setName] = useState('');
   const [lowerBound, setLowerBound] = useState('');
   const [upperBound, setUpperBound] = useState('');
+  const [complexIndicators, setComplexIndicators] = useState([]);
+  const [threatLevels, setThreatLevels] = useState([]);
   const [threatLevel, setThreatLevel] = useState('');
   const [complexIndicator, setComplexIndicator] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const axios = useAxios('http://localhost:8080');
+
+  useEffect(() => {
+    if (!axios) return
+    axios.get('/api/v1/fire-weather-indexes/dictionary')
+        .then((response) => {
+            const indicators = response.data.ffwiList.map(ffwi => {
+              const res = {ffwiId: ffwi.id, name: ffwi.name};
+              return res;
+            });
+            setComplexIndicators([...indicators]);
+            setThreatLevels([...response.data.fireDangerList])
+            setComplexIndicator(indicators[0].ffwiId)
+            setThreatLevel(response.data.fireDangerList[0].id)
+          })
+        .catch((err) => console.log(err));
+
+  }, [axios]);
 
   const handleCreate = () => {
     if (!name || !lowerBound || !upperBound || !threatLevel || !complexIndicator) {
       setError('Все поля должны быть заполнены');
       return;
     }
-
-    // Добавьте ваш код для сохранения данных в базу
-    // ...
-
-    navigate('/fire-hazard-class');
+    // console.log('CREATED')
+    axios.post('/api/v1/fire-weather-indexes', {
+      name: name,
+      minValue: lowerBound === '∞' ? Number.MAX_VALUE : lowerBound,
+      maxValue: upperBound === '∞' ? Number.MAX_VALUE : upperBound,
+      fireDangerId: threatLevel,
+      ffwiId: complexIndicator
+    }, {
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then((resp) => navigate('/fire-hazard-class'))
+      .catch((err) => setError(err.message));
   };
 
   return (
@@ -61,10 +90,11 @@ const CreateFHClass = () => {
                     value={complexIndicator}
                     onChange={(e) => setComplexIndicator(e.target.value)}
                   >
-                    <option value="">Выберите показатель</option>
-                    {/* Добавьте необходимые варианты */}
-                    <option value="Показатель 1">Показатель 1</option>
-                    <option value="Показатель 2">Показатель 2</option>
+                    {
+                      complexIndicators.map(indicator => (
+                          <option key={indicator.ffwiId} value={indicator.ffwiId}>{indicator.name}</option>
+                      ))
+                    }
                   </select>
                 </td>
               </tr>
@@ -99,12 +129,11 @@ const CreateFHClass = () => {
                     value={threatLevel}
                     onChange={(e) => setThreatLevel(e.target.value)}
                   >
-                    <option value="">Выберите уровень</option>
-                    <option value="Отсутствует">Отсутствует</option>
-                    <option value="Низкий">Низкий</option>
-                    <option value="Средний">Средний</option>
-                    <option value="Высокий">Высокий</option>
-                    <option value="Критический">Критический</option>
+                    {
+                      threatLevels.map(level => (
+                          <option key={level.id} value={level.id}>{level.name}</option>
+                      ))
+                    }
                   </select>
                 </td>
               </tr>
