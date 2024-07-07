@@ -2,29 +2,44 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Registration.css';
 import logo from '../images/logo-2.png';
+import {useAxios} from "./AxiosComponent";
 
 const Registration = (props) => {
   const [email, setEmail] = useState('');
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [twoPassword, setTwoPassword] = useState('');
-  const [code, setCode] = useState('');
+  const [registrationCode, setRegistrationCode] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const axios = useAxios('http://localhost:8080')
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!email || !login || !password || !twoPassword || !code) {
+    if (!email || !login || !password || !twoPassword || !registrationCode) {
       setError('Все поля должны быть заполнены');
     } else if (login === 'null') { // Замените на реальную проверку
       setError('Логин указан неверно');
-    } else if (code === 'null') { // Замените на реальную проверку
+    } else if (registrationCode === 'null') { // Замените на реальную проверку
       setError('Код от организации указан неверно');
     } else if (password !== twoPassword) { // Замените на реальную проверку
       setError('Пароли не совпадают');
     } else {
-      props.onRegistration({ email, login });
-      navigate('/info'); // Перенаправление на страницу с ознакомительной информацией
+        axios.post('http://localhost:8080/api/v1/users/registration', {
+          login: login,
+          email: email,
+          password: password,
+          registrationCode: registrationCode
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then((resp) => {
+            console.log(resp)
+            navigate('/info')
+          })
+          .catch((err) => setError(err.response.data['message']))
     }
   };
 
@@ -65,10 +80,10 @@ const Registration = (props) => {
           onChange={(e) => setTwoPassword(e.target.value)}
         />
         <input
-          type="password"
+          type="text"
           placeholder="enter the code from your organization"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
+          value={registrationCode}
+          onChange={(e) => setRegistrationCode(e.target.value)}
         />
         <button type="submit">Зарегистрироваться</button>
         <div className="terms">

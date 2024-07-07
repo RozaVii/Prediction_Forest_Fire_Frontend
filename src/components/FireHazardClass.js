@@ -29,8 +29,6 @@ const FireHazardClass = () => {
       threatLevel: dto['fireDangerName'],
     }
 
-    console.log(result)
-
     return result
   }
 
@@ -47,13 +45,18 @@ const FireHazardClass = () => {
   const navigate = useNavigate();
 
   const handleSelectChange = (e) => {
-    console.log(e.target)
     setSelectedClass(e.target.value);
   };
 
   const handleDelete = () => {
-    setClasses(classes.filter(cls => cls.name !== selectedClass));
-    setSelectedClass('');
+    const selectedClassInfo = classes.find(cls => cls.name === selectedClass);
+    console.log(selectedClassInfo)
+    axios.delete(`/api/v1/fire-weather-indexes/${selectedClassInfo.id}`)
+        .then((resp) => {
+          console.log('Успешное удаление')
+          setClasses(classes.filter(cls => cls.id !== selectedClassInfo.id))
+        })
+        .catch((err) => {console.log(err)})
   };
 
   const selectedClassInfo = classes.find(cls => cls.name === selectedClass);
