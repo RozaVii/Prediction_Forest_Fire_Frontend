@@ -1,0 +1,82 @@
+/* src/components/PrecipitationIndexes.css */
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.info-content {
+  display: flex;
+  flex: 1;
+}
+
+.precipitation-container {
+  padding: 20px;
+  flex: 1;
+}
+
+.precipitation-title {
+  text-align: center; /* Центрируем заголовок */
+  margin-bottom: 20px;
+}
+
+.precipitation-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.precipitation-table th,
+.precipitation-table td {
+  border: 1px solid #ddd; /* Линии разделяющие строки */
+  padding: 10px;
+  text-align: left;
+}
+
+.precipitation-table th {
+  background-color: #f2f2f2; /* Затемнённая строка заголовков */
+}
+
+.precipitation-table td button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.precipitation-table td input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  background-color: #4CAF50;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.pagination button:hover {
+  background-color: #ddd;
+}
+
+.pagination span {
+  font-size: 18px;
+}
