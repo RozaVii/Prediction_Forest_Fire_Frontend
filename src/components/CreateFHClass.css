@@ -17,7 +17,7 @@
 }
 
 .create-fhc-title {
-  text-align: center; /* Центрируем заголовок */
+  text-align: center; 
   margin-bottom: 20px;
 }
 
@@ -38,12 +38,22 @@ input {
 }
 
 button {
-  background-color: #4CAF50;
-  color: white;
+  padding: 10px 15px;
   cursor: pointer;
+  background-color: #ff8c00;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #e57300;
+  color: white;
 }
 
 button[disabled] {
+  background-color: #ff8c00;
+  color: #333;
   cursor: not-allowed;
   opacity: 0.6;
 }
@@ -51,18 +61,18 @@ button[disabled] {
 .fhc-table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #ddd; /* Рамка вокруг таблицы */
+  border: 1px solid #ddd; 
 }
 
 .fhc-table th,
 .fhc-table td {
-  border-bottom: 1px solid #ddd; /* Линии разделяющие строки */
+  border-bottom: 1px solid #ddd; 
   padding: 10px;
   text-align: left;
 }
 
 .fhc-table th {
-  border-bottom: 2px solid #ddd; /* Немного толще граница для заголовков */
+  border-bottom: 2px solid #ddd;
 }
 
 .error {
