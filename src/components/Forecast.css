@@ -33,13 +33,13 @@
 }
 
 .forecast-buttons button:first-child {
-  background-color: #28a745;
-  color: white;
+  background-color: #ff8c00;
+  color: #333;
 }
 
 .forecast-buttons button:last-child {
-  background-color: #28a745;
-  color: white;
+  background-color: #ff8c00;
+  color: #333;
 }
 
 .forecast-buttons button:hover {
